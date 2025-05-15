@@ -4,18 +4,22 @@ import FilterComponent from './components/FilterComponent';
 import ToDoList from './components/ToDoList';
 
 const App = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(
+    localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : []
+  );
   const [filter, setFilter] = useState('all');
 
   const toggleTodo = id => {
-    setTodos(prevTodos =>
-      prevTodos.map(todo => {
+    setTodos(prevTodos => {
+      const toDos = prevTodos.map(todo => {
         if (todo.id === id) {
           return { ...todo, completed: !todo.completed };
         }
         return todo;
-      })
-    );
+      });
+      localStorage.setItem('todos', JSON.stringify(toDos));
+      return toDos;
+    });
   };
 
   const filteredTodos = todos.filter(todo => {

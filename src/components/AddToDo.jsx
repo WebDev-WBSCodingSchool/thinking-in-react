@@ -6,7 +6,11 @@ const AddToDo = ({ setTodos }) => {
   const handleSubmit = e => {
     e.preventDefault();
     if (!newTodo.trim()) return alert('Please enter a to-do item');
-    setTodos(prevTodos => [{ id: Date.now(), text: newTodo, completed: false }, ...prevTodos]);
+    setTodos(prevTodos => {
+      const toDos = [{ id: Date.now(), text: newTodo, completed: false }, ...prevTodos];
+      localStorage.setItem('todos', JSON.stringify(toDos));
+      return toDos;
+    });
     setNewTodo('');
   };
 
